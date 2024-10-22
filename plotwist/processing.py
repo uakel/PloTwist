@@ -1,10 +1,11 @@
 """
-Data processing functions
+A submodule with lots of helper functions for processing data
 """
 
 import numpy as np
 from typing import List, Tuple, Callable
 
+# Signal processing related functions
 def moving_average(signal: np.ndarray, n: int) -> np.ndarray:
     """
     Compute the moving average of a signal with a window of size n.
@@ -30,6 +31,7 @@ def moving_average(signal: np.ndarray, n: int) -> np.ndarray:
         averages[i] = 1 / (1 + 2 * delta) * np.sum(signal[i_low:i_high])
     return averages
 
+# Signal distance related functions
 def mean_squared_signal_distance(signal1: np.ndarray, signal2: np.ndarray) -> float:
     """
     Compute the mean squared distance between two signals.

@@ -1,6 +1,12 @@
+"""
+User accessible function (instructions)
+that fill the program for the compiler.
+"""
+
 from .program import Item, ChangeStacker
 import plotwist as ptw
 
+# Item creating instructions
 def title(title: str) -> None:
     """
     Add a title to the html report.
@@ -11,7 +17,9 @@ def title(title: str) -> None:
     Returns:
         None
     """
+    # Make the HTML
     item = Item(f"<h1>{title}</h1>", mode="block")
+    # Append the item to the program
     ptw.program.append(item)
 
 def subtitle(subtitle: str) -> None:
@@ -24,21 +32,11 @@ def subtitle(subtitle: str) -> None:
     Returns:
         None
     """
+    # Make the HTML
     item = Item(f"<h2>{subtitle}</h2>", mode="block")
+    # Append the item to the program
     ptw.program.append(item)
 
-def stacker(stacker: str) -> None:
-    """
-    Change the stacker of the html report.
-
-    Args:
-        stacker: str, the stacker type
-
-    Returns:
-        None
-    """
-    stackfluencer = ChangeStacker(stacker)
-    ptw.program.append(stackfluencer)
 
 def comment(comment: str) -> None:
     """
@@ -50,7 +48,9 @@ def comment(comment: str) -> None:
     Returns:
         None
     """
+    # Make the HTML
     item = Item(f"<p>{comment}</p>", mode="block")
+    # Append the item to the program
     ptw.program.append(item)
 
 def rule() -> None:
@@ -63,7 +63,30 @@ def rule() -> None:
     Returns:
         None
     """
+    # Make the HTML
     item = Item("<hr>", mode="block")
+    # Append the item to the program
     ptw.program.append(item)
 
-from .plot import type_one_comparative, density_from_percentiles, nth_listvalued_of_all_subkeys, plot
+# Plotting instructions
+from .plot import (type_one_comparative, 
+                   density_from_percentiles, 
+                   nth_listvalued_of_all_subkeys,
+                   plot,
+                   embedded_subplots)
+
+# Stackfluencer generating instructions
+def stacker(stacker: str) -> None:
+    """
+    Change the stacker of the html report.
+
+    Args:
+        stacker: str, the stacker type
+
+    Returns:
+        None
+    """
+    # Make the stackfluencer
+    stackfluencer = ChangeStacker(stacker)
+    # Append the item to the program
+    ptw.program.append(stackfluencer)

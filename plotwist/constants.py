@@ -1,21 +1,21 @@
 """
-Constants for the HTML template.
+Constants
 """
 
+# MathJax enabling header
 HEADER = \
-"""
-<head>
-<style>
-.parent {
-  margin: 1rem;
-  padding: 2rem 2rem;
-}
-.child {
-  display: inline-block;
-  padding: 1rem 1rem;
-  vertical-align: middle;
-  width: 45%;
-}
-</style>
+r"""<head>
+<meta charset="utf-8">
+<title>Report</title>
+<script type="text/javascript">
+window.MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
 </head>
 """

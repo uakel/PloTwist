@@ -1,8 +1,41 @@
 """
-Utils for reading SSPE files and data handling.
+A submodule with lots of helper functions for handling data
 """
 # Imports
 from typing import Any, Dict, Generator, List
+
+# Classes
+class NestedDict:
+    """
+    A class that provides quallity of life improvements
+    for working with nested dictionaries.
+    """
+    def __init__(self, dictionary: Dict):
+        self.dictionary = dictionary
+
+    def __getitem__(self, key: str) -> Any:
+        """
+        Returns for a '/' separated key like 'a/b/c'
+        the value in the nested dictionary at 
+        dictionary['a']['b']['c'].
+
+        'a/b/c' is called a key path.
+        """
+        current = self.dictionary
+        for key in key.split('/'):
+            if key not in current:
+                raise KeyError(f"Key '{key}' not found.")
+            current = current[key]
+        if isinstance(current, dict):
+            return NestedDict(current)
+        return current
+
+    def subkeys(self, key: str) -> List[str]:
+        """
+        Returns the keys of the dictionary 
+        located at the key path.
+        """
+        return list(self[key].dictionary.keys())
 
 # Functions
 def sspe_reader(path: str) -> Generator[list[Any], None, None]:
@@ -15,7 +48,8 @@ def sspe_reader(path: str) -> Generator[list[Any], None, None]:
 
     Yields:
         list: A list of values from
-              the file.
+              the file contained in
+              the current line.
     """
     # Make dictionaries for the _global and _local
     # namespaces to be used for the eval and exec
@@ -35,6 +69,7 @@ def sspe_reader(path: str) -> Generator[list[Any], None, None]:
                 yield [eval(value, _globals, _locals) 
                        for value in line.split(";")]
         
+
 def make_dict_from_sspe(path: str) -> Dict[str, Dict[str, Any] | Any]:
     """
     Make a nested dictionary from a SSPE file. The first 
@@ -66,25 +101,17 @@ def make_dict_from_sspe(path: str) -> Dict[str, Dict[str, Any] | Any]:
                 current[key_path[-1]] = [value]
     return dictionary
 
-# Classes
-class NestedDict:
+def make_nested_dict_from_sspe(path: str) -> NestedDict:
     """
-    A class for nested dictionaries with handy access
-    through path strings.
+    Make a NestedDict class from a SSPE file. The first 
+    line of the file should be the key paths for The
+    nested dictionary. The rest of the lines should be
+    the values for the keys.
+
+    Args:
+        path (str): The path to the file.
+    
+    Returns:
+        NestedDict: The dictionary 
     """
-    def __init__(self, dictionary: Dict):
-        self.dictionary = dictionary
-
-    def __getitem__(self, key: str) -> Any:
-        current = self.dictionary
-        for key in key.split('/'):
-            if key not in current:
-                raise KeyError(f"Key '{key}' not found.")
-            current = current[key]
-        if isinstance(current, dict):
-            return NestedDict(current)
-        return current
-
-    def subkeys(self, key: str) -> List[str]:
-        return list(self[key].dictionary.keys())
-
+    return NestedDict(make_dict_from_sspe(path))

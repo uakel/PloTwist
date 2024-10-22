@@ -1,8 +1,6 @@
 """
 Plotting functions
 """
-# Constants
-COLORS =["#003049", "#d62828", "#f77f00", "#fcbf49", "#eae2b7"]
 
 # Globals
 current_color = 0
@@ -13,16 +11,40 @@ from typing import Dict, Callable, List, Tuple, Any
 
 # Imports 
 import numpy as np
+from matplotlib.figure import Figure
+from matplotlib.axes import Axes
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
-
-from .processing import moving_average, find_best_shift
-from .data_handling import NestedDict
 from .program import Item
-import plotwist as main 
+import plotwist as ptw 
 
+# Context manager type instruction that embeds a subplot
+class embedded_subplots:
+    def __init__(self, *args, **kwargs) -> None:
+        self.fig, self.axs = plt.subplots(*args, **kwargs)
+
+    def __enter__(self) -> Tuple[Figure, Axes]:
+        return self.fig, self.axs
+    
+    def __exit__(self, *args) -> None:
+        global plot_idx
+        self.fig.savefig(f"report/plots/plot_{plot_idx}.svg")
+        ptw.program.append(Item(
+            f"<img src='plots/plot_{plot_idx}.svg'>")
+        )
+        plot_idx += 1
+
+###############
+# Legacy code #
+###############
+
+# Constants
+COLORS =["#003049", "#d62828", "#f77f00", "#fcbf49", "#eae2b7"]
 
 # Formatting
+from .data_handling import NestedDict
+from .processing import moving_average
+from matplotlib.ticker import FuncFormatter
+
 def format_large_numbers(x: float, pos: int) -> str:
     """
     Format large numbers in a human-readable way.
@@ -109,7 +131,7 @@ def plot(*args, **kwargs):
     ax.plot(*args, **kwargs)
     global plot_idx
     fig.savefig(f"report/plots/plot_{plot_idx}.svg")
-    main.program.append(Item(
+    ptw.program.append(Item(
         f"<img src='plots/plot_{plot_idx}.svg'>")
     )
     plot_idx += 1
@@ -176,7 +198,7 @@ def type_one_comparative(data: Dict[str, Dict | Any],
     current_color = 0
     global plot_idx
     fig.savefig(f"report/plots/plot_{plot_idx}.svg")
-    main.program.append(Item(
+    ptw.program.append(Item(
         f"<img src='plots/plot_{plot_idx}.svg'>")
     )
     plot_idx += 1
@@ -258,7 +280,7 @@ def density_from_percentiles(data: Dict[str, Dict | Any],
     current_color = 0
     global plot_idx
     fig.savefig(f"report/plots/plot_{plot_idx}.svg")
-    main.program.append(Item(
+    ptw.program.append(Item(
         f"<img src='plots/plot_{plot_idx}.svg'>")
     )
     plot_idx += 1
@@ -343,24 +365,7 @@ def nth_listvalued_of_all_subkeys(data: Dict,
     current_color = 0
     global plot_idx
     fig.savefig(f"report/plots/plot_{plot_idx}.svg")
-    main.program.append(Item(
+    ptw.program.append(Item(
         f"<iframe src='plots/plot_{plot_idx}.svg' width='700px' height='500px'></iframe>")   
     )
     plot_idx += 1
-
-
-# Context manager for embedded subplots
-class embedded_subplots:
-    def __init__(self, *args, **kwargs) -> None:
-        self.fig, self.axs = plt.subplots(*args, **kwargs)
-
-    def __enter__(self) -> Tuple[plt.Figure, plt.Axes]:
-        return self.fig, self.axs
-    
-    def __exit__(self, *args) -> None:
-        global plot_idx
-        self.fig.savefig(f"report/plots/plot_{plot_idx}.svg")
-        main.program.append(Item(
-            f"<img src='plots/plot_{plot_idx}.svg'>")
-        )
-        plot_idx += 1

@@ -5,7 +5,11 @@ Programming Elements
 from abc import ABC, abstractmethod
 from .constants import HEADER
 
-# Stackers
+############################
+# Stackers (Compile Modes) #
+############################
+
+# Base class
 class Stacker(ABC):
     """
     A class for stacking items in the html report.
@@ -32,12 +36,14 @@ class Stacker(ABC):
         self.close()
         self.html += "</body>\n</html>"
 
+# Sub classes
 class NormalStacker(Stacker):
     """
     A class for stacking items in the html report.
     """
     def __init__(self):
         super().__init__()
+        self.html += HEADER
         self.html += "<body>\n"
 
     def stack(self, item):
@@ -58,6 +64,7 @@ class ColumnStacker(Stacker):
     """
     def __init__(self, columns: int):
         super().__init__()
+        self.html += HEADER
         self.html += "<body>\n"
         self.column = 0
         self.columns = columns
@@ -90,6 +97,7 @@ class CenterStacker(Stacker):
     def __init__(self):
         super().__init__()
         self.html += HEADER
+        self.html += "<body>\n"
 
     def stack(self, item):
         """
@@ -103,7 +111,11 @@ class CenterStacker(Stacker):
         """
         pass
 
-# Instructions
+#########################
+# Compiler Instructions #
+#########################
+
+# Base Instructions
 class Item:
     """
     A class for an item in the html report.
@@ -122,6 +134,7 @@ class Stackfluencer(ABC):
         Influences the current stacker
         """
 
+# Special case Instructions
 class ChangeStacker(Stackfluencer):
     """
     A class for changing the stacker

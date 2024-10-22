@@ -1,7 +1,5 @@
 """
-PloTwist: A Python package for html report generation from 
-          semicolon separated python expression files (.sspe) 
-          with minimal code.
+PloTwist: A Python package for html report generation with minimal code.
 
 Author: Leonard Franz
 """
@@ -10,32 +8,38 @@ from typing import List
 
 # Imports
 import os
-from . import program as pm
+from .program import Item, Stackfluencer, NormalStacker
 
-# Global variables
-program: List[pm.Item | pm.Stackfluencer] = []
+# Program for the compiler
+program: List[Item | Stackfluencer] = []
 
-# Functions
+
+# Compiler
 def make():
-    stacker: pm.Stacker = pm.NormalStacker()
+    # Make folder structure
+    os.makedirs("report", exist_ok=True)
+    os.makedirs("report/plots", exist_ok=True)
+    # Initialize a NormalStacker
+    stacker: Stacker =NormalStacker()
+    # Let the stacker compile the program
     for instruction in program:
-        if issubclass(type(instruction), pm.Item):
+        # If the instruction is an Item
+        # let the stacker stack it
+        if issubclass(type(instruction), Item):
             stacker.stack(instruction)
-        elif issubclass(type(instruction), pm.Stackfluencer):
+        # If the instruction is a Stackfluencer
+        # influence the stacker
+        elif issubclass(type(instruction), Stackfluencer):
             stacker = instruction.influence(stacker)
+        # If the instruction is neither an Item
+        # nor a Stackfluencer, then the Program
+        # is invalid.
         else:
             raise ValueError("Unknown instruction type.")
+    # Tell the stacker that no more items are coming
     stacker.end()
+    # Write the html to a file
     with open("report/index.html", "w") as file:
         file.write(stacker.html)
+    # Clear the program
     program.clear()
-        
-
-# Make folder structure
-os.makedirs("report", exist_ok=True)
-os.makedirs("report/plots", exist_ok=True)
-
-# Fill the namespace
-from .data_handling import make_dict_from_sspe
-from .plot import type_one_comparative
-from .program import ChangeStacker
