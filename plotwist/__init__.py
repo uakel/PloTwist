@@ -13,12 +13,12 @@ from .program import Item, Stackfluencer, NormalStacker
 # Program for the compiler
 program: List[Item | Stackfluencer] = []
 
+# Make folder structure
+os.makedirs("report", exist_ok=True)
+os.makedirs("report/plots", exist_ok=True)
 
 # Compiler
 def make():
-    # Make folder structure
-    os.makedirs("report", exist_ok=True)
-    os.makedirs("report/plots", exist_ok=True)
     # Initialize a NormalStacker
     stacker: Stacker =NormalStacker()
     # Let the stacker compile the program
