@@ -16,6 +16,7 @@ class Stacker(ABC):
     """
     def __init__(self):
         self.html = "<html>\n"
+        self.script = "<script>\n"
 
     @abstractmethod
     def stack(self, item):
@@ -34,7 +35,8 @@ class Stacker(ABC):
         Ends the html report.
         """
         self.close()
-        self.html += "</body>\n</html>"
+        self.script += "</script>\n"
+        self.html += "</body>\n" + self.script + "</html>"
 
 # Sub classes
 class NormalStacker(Stacker):
@@ -51,6 +53,8 @@ class NormalStacker(Stacker):
         Stacks the items in the html report.
         """
         self.html += item.html + "\n"
+        if item.script != "":
+            self.script += item.script + "\n"
 
     def close(self):
         """
@@ -73,6 +77,8 @@ class ColumnStacker(Stacker):
         """
         Stacks the items in the html report.
         """
+        if item.script != "":
+            self.script += item.script + "\n"
         if item.mode == "block":
             self.html += item.html + "<br>"
             self.column = 0
@@ -103,6 +109,8 @@ class CenterStacker(Stacker):
         """
         Stacks the items in the html report.
         """
+        if item.script != "":
+            self.script += item.script + "\n"
         self.html += f"<center>{item.html}</center><br>\n"
 
     def close(self):
@@ -120,9 +128,10 @@ class Item:
     """
     A class for an item in the html report.
     """
-    def __init__(self, html, mode="inline"):
+    def __init__(self, html, mode="inline", script=""):
         self.html = html
         self.mode = mode
+        self.script = script
 
 class Stackfluencer(ABC):
     """

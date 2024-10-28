@@ -37,7 +37,6 @@ def subtitle(subtitle: str) -> None:
     # Append the item to the program
     ptw.program.append(item)
 
-
 def comment(comment: str) -> None:
     """
     Add a comment to the html report.
@@ -68,13 +67,6 @@ def rule() -> None:
     # Append the item to the program
     ptw.program.append(item)
 
-# Plotting instructions
-from .plot import (type_one_comparative, 
-                   density_from_percentiles, 
-                   nth_listvalued_of_all_subkeys,
-                   plot,
-                   embedded_subplots)
-
 # Stackfluencer generating instructions
 def stacker(stacker: str) -> None:
     """
@@ -90,3 +82,6 @@ def stacker(stacker: str) -> None:
     stackfluencer = ChangeStacker(stacker)
     # Append the item to the program
     ptw.program.append(stackfluencer)
+
+# Plotting instructions
+from .plot import embedded_subplots, slider_subplots

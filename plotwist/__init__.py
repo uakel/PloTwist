@@ -3,6 +3,9 @@ PloTwist: A Python package for html report generation with minimal code.
 
 Author: Leonard Franz
 """
+# Use matplotlib style
+from matplotlib import style
+style.use(__file__.replace("__init__.py", "style.mplstyle"))
 # Typing
 from typing import List
 
