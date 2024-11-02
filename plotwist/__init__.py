@@ -6,43 +6,28 @@ Author: Leonard Franz
 # Use matplotlib style
 from matplotlib import style
 style.use(__file__.replace("__init__.py", "style.mplstyle"))
-# Typing
-from typing import List
 
 # Imports
 import os
-from .program import Item, Stackfluencer, NormalStacker
-
-# Program for the compiler
-program: List[Item | Stackfluencer] = []
 
 # Make folder structure
 os.makedirs("report", exist_ok=True)
 os.makedirs("report/plots", exist_ok=True)
 
-# Compiler
-def make():
-    # Initialize a NormalStacker
-    stacker: Stacker =NormalStacker()
-    # Let the stacker compile the program
-    for instruction in program:
-        # If the instruction is an Item
-        # let the stacker stack it
-        if issubclass(type(instruction), Item):
-            stacker.stack(instruction)
-        # If the instruction is a Stackfluencer
-        # influence the stacker
-        elif issubclass(type(instruction), Stackfluencer):
-            stacker = instruction.influence(stacker)
-        # If the instruction is neither an Item
-        # nor a Stackfluencer, then the Program
-        # is invalid.
-        else:
-            raise ValueError("Unknown instruction type.")
-    # Tell the stacker that no more items are coming
-    stacker.end()
-    # Write the html to a file
-    with open("report/index.html", "w") as file:
-        file.write(stacker.html)
-    # Clear the program
-    program.clear()
+# Fill the namespace
+from .instructions import *
+from .plot import slider_subplots, embedded_subplots, add_fig
+from .program import make
+
+# __all__ variable
+__all__ = [
+    "title",
+    "subtitle", 
+    "comment",
+    "rule",
+    "stacker",
+    "make",
+    "add_fig",
+    "slider_subplots",
+    "embedded_subplots",
+]

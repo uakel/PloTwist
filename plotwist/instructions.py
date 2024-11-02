@@ -4,7 +4,7 @@ that fill the program for the compiler.
 """
 
 from .program import Item, ChangeStacker
-import plotwist as ptw
+import plotwist.program as ptp
 
 # Item creating instructions
 def title(title: str) -> None:
@@ -20,7 +20,7 @@ def title(title: str) -> None:
     # Make the HTML
     item = Item(f"<h1>{title}</h1>", mode="block")
     # Append the item to the program
-    ptw.program.append(item)
+    ptp.program.append(item)
 
 def subtitle(subtitle: str) -> None:
     """
@@ -35,7 +35,7 @@ def subtitle(subtitle: str) -> None:
     # Make the HTML
     item = Item(f"<h2>{subtitle}</h2>", mode="block")
     # Append the item to the program
-    ptw.program.append(item)
+    ptp.program.append(item)
 
 def comment(comment: str) -> None:
     """
@@ -50,7 +50,7 @@ def comment(comment: str) -> None:
     # Make the HTML
     item = Item(f"<p>{comment}</p>", mode="block")
     # Append the item to the program
-    ptw.program.append(item)
+    ptp.program.append(item)
 
 def rule() -> None:
     """
@@ -65,7 +65,7 @@ def rule() -> None:
     # Make the HTML
     item = Item("<hr>", mode="block")
     # Append the item to the program
-    ptw.program.append(item)
+    ptp.program.append(item)
 
 # Stackfluencer generating instructions
 def stacker(stacker: str) -> None:
@@ -81,7 +81,4 @@ def stacker(stacker: str) -> None:
     # Make the stackfluencer
     stackfluencer = ChangeStacker(stacker)
     # Append the item to the program
-    ptw.program.append(stackfluencer)
-
-# Plotting instructions
-from .plot import embedded_subplots, slider_subplots
+    ptp.program.append(stackfluencer)

@@ -4,6 +4,7 @@ Programming Elements
 # Imports
 from abc import ABC, abstractmethod
 from .constants import HEADER
+from typing import List
 
 ############################
 # Stackers (Compile Modes) #
@@ -171,3 +172,33 @@ class ChangeStacker(Stackfluencer):
         stacker.close()
         self.stacker.html = stacker.html
         return self.stacker
+
+# Program for the compiler
+program: List[Item | Stackfluencer] = []
+
+# Compiler
+def make():
+    # Initialize a NormalStacker
+    stacker: Stacker = NormalStacker()
+    # Let the stacker compile the program
+    for instruction in program:
+        # If the instruction is an Item
+        # let the stacker stack it
+        if issubclass(type(instruction), Item):
+            stacker.stack(instruction)
+        # If the instruction is a Stackfluencer
+        # influence the stacker
+        elif issubclass(type(instruction), Stackfluencer):
+            stacker = instruction.influence(stacker)
+        # If the instruction is neither an Item
+        # nor a Stackfluencer, then the Program
+        # is invalid.
+        else:
+            raise ValueError("Unknown instruction type.")
+    # Tell the stacker that no more items are coming
+    stacker.end()
+    # Write the html to a file
+    with open("report/index.html", "w") as file:
+        file.write(stacker.html)
+    # Clear the program
+    program.clear()
