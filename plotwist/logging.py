@@ -42,7 +42,7 @@ class TimePrint:
         global level
         self.color = level_colors[level % len(level_colors)]
         # Print the message
-        print(self.color + self.message + reset_color)
+        print(" " * 4 * level + self.color + self.message + reset_color)
         # Start the timer
         self.start = time()
         level += 1
