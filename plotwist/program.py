@@ -171,6 +171,7 @@ class ChangeStacker(Stackfluencer):
         """
         stacker.close()
         self.stacker.html = stacker.html
+        self.stacker.script = stacker.script
         return self.stacker
 
 # Program for the compiler

@@ -1,2 +1,8 @@
-# PloTwist
-A Python package for html report generation from semicolon separated python expression files (.sspe) with minimal code.
+# PloTwist: A Python package for HTML report generation with minimal code.
+## Installation
+Clone this repository and run 
+```
+pip install -e .
+```
+## Usage
+checkout the examples

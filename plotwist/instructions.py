@@ -5,6 +5,7 @@ that fill the program for the compiler.
 
 from .program import Item, ChangeStacker
 import plotwist.program as ptp
+from typing import Literal
 
 # Item creating instructions
 def title(title: str) -> None:
@@ -68,12 +69,16 @@ def rule() -> None:
     ptp.program.append(item)
 
 # Stackfluencer generating instructions
-def stacker(stacker: str) -> None:
+def stacker(stacker: Literal["normal", "center", "one", "two", "three", "four"]) -> None:
     """
     Change the stacker of the html report.
 
     Args:
         stacker: str, the stacker type
+                 from either "normal",
+                 "center", "one", "two",
+                 "three", "four"
+
 
     Returns:
         None

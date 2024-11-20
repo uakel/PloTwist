@@ -1,0 +1,37 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Report</title>
+<script type="text/javascript">
+window.MathJax = {
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+</head>
+<body>
+<h1>Example Report</h1>
+<hr>
+<h2>Embed your Plots</h2>
+<img src='plots/plot_0.svg'>
+<h2>Even sliders are supported!</h2>
+<span style="display: inline-flex; flex-direction: column;">
+<input type="range" min="0" max="18" value="0" class="slider" id="slider_20">
+<img src="plots/plot_1.svg" id="plot_20" >
+</span>
+<center><h2>You can also change the layout of your report</h2></center><br>
+<center><img src='plots/plot_21.svg'></center><br>
+<center><p>Note the nice standard template!</p></center><br>
+</body>
+<script>
+var slider_20 = document.getElementById("slider_20");
+var output_20 = document.getElementById("plot_20");
+slider_20.oninput = function() {
+    output_20.src = "plots/plot_" + (1 + parseInt(this.value)) + ".svg";
+}
+</script>
+</html>

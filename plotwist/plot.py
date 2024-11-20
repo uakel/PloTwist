@@ -53,7 +53,7 @@ class embedded_subplots:
         self.embedding = embedding
         self.fig, self.axs = plt.subplots(*args, **kwargs)
 
-    def __enter__(self) -> Tuple[Figure, Axes | List[Axes] | List[List[Axes]]]:
+    def __enter__(self) -> Tuple[Figure, Axes]:
         return self.fig, self.axs
     
     def __exit__(self, *args) -> None:
@@ -105,7 +105,8 @@ class slider_subplots:
             self.figs.append(fig)
             self.axs.append(ax)
 
-    def __enter__(self) -> Tuple[List[Figure], List[Axes | List[Axes] | List[List[Axes]]]]:
+    def __enter__(self) -> Tuple[List[Figure], 
+                                 List[Axes]]:
         return self.figs, self.axs
 
     def __exit__(self, *args) -> None:
