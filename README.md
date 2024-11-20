@@ -1,4 +1,4 @@
-# PloTwist: A Python package for HTML report generation with minimal code.
+# PloTwist: A python package for HTML report generation with minimal code.
 ## Installation
 Clone this repository and run 
 ```
