@@ -1,16 +1,18 @@
 import numpy as np
 from plotwist import *
 
-# Insert Titles and Subtitles
+# Insert titles and subtitles
 title("Example Report")
 # A rule can make your report more readable
 rule()
-subtitle("Embed your Plots")
+subtitle("Embed interactive versions of your plots!")
 
-# Context Managers for plots that get
+# PloTwist works with context managers 
+# that return axes that then get 
 # automatically embedded in the report
 with embedded_subplots(
-    embedding="interactive" # The embedding selects the way the plots are displayed
+    # The embedding argument selects the way the plots are displayed
+    embedding="interactive" 
 ) as (fig, ax):
     x = np.linspace(0, 2 * np.pi, 100)
     ax.plot(x, np.sin(x), label='sin(x)')
@@ -31,8 +33,7 @@ with slider_subplots(19) as (figs, axs):
         ax.grid()
 
 # Changing the stacker makes the elements you
-# add to the report appear with a diffent structure
-# and at a different position
+# add to the report appear at different positions
 stacker("center")
 subtitle("You can also change the layout of your report")
 from matplotlib import pyplot as plt
