@@ -5,4 +5,4 @@ Clone this repository and run
 pip install -e .
 ```
 ## Usage
-checkout the examples
+Checkout the [example report](examples/example.py) ([here rendered as website](https://html-preview.github.io/?url=https://github.com/uakel/PloTwist/blob/master/examples/report/index.html))
