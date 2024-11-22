@@ -18,6 +18,9 @@ os.makedirs("report/plots", exist_ok=True)
 from .instructions import *
 from .plot import slider_subplots, embedded_subplots, add_fig
 from .program import make
+from .data_handling import make_nested_dict_from_sspe
+from .logging import TimePrint
+from .decorate import decorate, format_large_numbers, C 
 
 # __all__ variable
 __all__ = [
@@ -30,4 +33,9 @@ __all__ = [
     "add_fig",
     "slider_subplots",
     "embedded_subplots",
+    "make_nested_dict_from_sspe",
+    "TimePrint",
+    "decorate",
+    "format_large_numbers",
+    "C"
 ]

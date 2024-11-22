@@ -136,28 +136,3 @@ slider_{plot_idx}.oninput = function() {{
         plot_idx += 1
         for fig in self.figs:
             fig.clf()
-
-# Miscelaneous plotting functions
-def format_large_numbers(x: float, pos: int) -> str:
-    """
-    Format large numbers in a human-readable way.
-    
-    Args:
-        x: float: number to format
-        pos: int: position
-
-    Returns:
-        str: formatted number
-    """
-    if x >= 1e12:
-        return f'{x*1e-12:.1f}T'
-    elif x >= 1e9:
-        return f'{x*1e-9:.1f}B'
-    elif x >= 1e6:
-        return f'{x*1e-6:.1f}M'
-    elif x >= 1e3:
-        return f'{x*1e-3:.1f}K'
-    elif x >= 1:
-        return f'{x:.1f}'
-    else:
-        return f'{x:.2f}'

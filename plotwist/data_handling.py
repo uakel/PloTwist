@@ -65,9 +65,14 @@ def sspe_reader(path: str) -> Generator[list[Any], None, None]:
             if line[0] == "!":
                 exec(line[1:], _globals, _locals)
             else:
+                return_value = []
                 # Otherwise, yield the  in the line
-                yield [eval(value, _globals, _locals) 
-                       for value in line.split(";")]
+                for value in line.split(";"):
+                    try:
+                        return_value.append(eval(value, _globals, _locals))
+                    except:
+                        return_value.append(value)
+                yield return_value
         
 
 def make_dict_from_sspe(path: str) -> Dict[str, Dict[str, Any] | Any]:
