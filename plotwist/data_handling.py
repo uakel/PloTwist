@@ -38,7 +38,10 @@ class NestedDict:
         return list(self[key].dictionary.keys())
 
 # Functions
-def sspe_reader(path: str) -> Generator[list[Any], None, None]:
+def sspe_reader(
+        path: str, 
+        skip_cols: List[int] = []
+    ) -> Generator[list[Any], None, None]:
     """
     Read a file in the Semicolon Separated Python 
     Expression (SSPE) format.
@@ -67,7 +70,9 @@ def sspe_reader(path: str) -> Generator[list[Any], None, None]:
             else:
                 return_value = []
                 # Otherwise, yield the  in the line
-                for value in line.split(";"):
+                for idx, value in enumerate(line.split(";")):
+                    if idx in skip_cols:
+                        continue
                     try:
                         return_value.append(eval(value, _globals, _locals))
                     except:
@@ -75,7 +80,7 @@ def sspe_reader(path: str) -> Generator[list[Any], None, None]:
                 yield return_value
         
 
-def make_dict_from_sspe(path: str) -> Dict[str, Dict[str, Any] | Any]:
+def make_dict_from_sspe(path: str, skip_if_contains: str | None = None) -> Dict[str, Dict[str, Any] | Any]:
     """
     Make a nested dictionary from a SSPE file. The first 
     line of the file should be the key paths for The
@@ -92,6 +97,15 @@ def make_dict_from_sspe(path: str) -> Dict[str, Dict[str, Any] | Any]:
     reader = sspe_reader(path)
     key_paths = [path.split('/') 
                  for path in next(reader)]
+
+    # Remove key paths that contain the skip_if_contains
+    if skip_if_contains:
+        cols_to_skip = [i for i, key_path in enumerate(key_paths) 
+                        if skip_if_contains in key_path]
+        reader = sspe_reader(path, cols_to_skip)
+        key_paths = [path.split('/')
+                     for path in next(reader)]
+
     # Initialize the dictionary
     dictionary = {}
     # Iterate over the key paths and values
