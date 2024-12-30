@@ -17,7 +17,7 @@ def format_large_numbers(range_: Tuple, x: float, pos: int) -> str:
     Returns:
         str: formatted number
     """
-    if (range_[1] - range_[0]) / np.abs(x) < 0.2:
+    if abs(range_[1] - range_[0]) / abs(range_[0]) < 0.2:
         if range_[0] >= 1e12:
             offset = f'{range_[0]*1e-12:.1f}T'
         elif range_[0] >= 1e9:
@@ -33,17 +33,22 @@ def format_large_numbers(range_: Tuple, x: float, pos: int) -> str:
 
         delta = x - range_[0]
         if delta >= 1e12:
-            return offset + f'+{delta*1e-12:.1f}T'
+            d_exp = f'+{delta*1e-12:.1f}T'
         elif delta >= 1e9:
-            return offset + f'+{delta*1e-9:.1f}B'
+            d_exp = f'+{delta*1e-9:.1f}B'
         elif delta >= 1e6:
-            return offset + f'+{delta*1e-6:.1f}M'
+            d_exp = f'+{delta*1e-6:.1f}M'
         elif delta >= 1e3:
-            return offset + f'+{delta*1e-3:.1f}K'
+            d_exp = f'+{delta*1e-3:.1f}K'
         elif delta >= 1:
-            return offset + f'+{delta:.1f}'
+            d_exp = f'+{delta:.1f}'
         else:
-            return offset + f'+{delta:.3f}'
+            d_exp = f'+{delta:.3f}'
+
+        if abs(x - range_[0]) / abs(range_[1] - range_[0]) < 0.15:
+            return offset + d_exp
+        return d_exp
+
 
     else:
         if x >= 1e12:
