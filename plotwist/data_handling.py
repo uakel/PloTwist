@@ -120,7 +120,10 @@ def make_dict_from_sspe(path: str, skip_if_contains: str | None = None) -> Dict[
                 current[key_path[-1]] = [value]
     return dictionary
 
-def make_nested_dict_from_sspe(path: str) -> NestedDict:
+def make_nested_dict_from_sspe(
+        path: str,
+        skip_if_contains: str | None = None
+    ) -> NestedDict:
     """
     Make a NestedDict class from a SSPE file. The first 
     line of the file should be the key paths for The
@@ -133,4 +136,4 @@ def make_nested_dict_from_sspe(path: str) -> NestedDict:
     Returns:
         NestedDict: The dictionary 
     """
-    return NestedDict(make_dict_from_sspe(path))
+    return NestedDict(make_dict_from_sspe(path, skip_if_contains))

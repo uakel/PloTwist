@@ -7,13 +7,6 @@ Author: Leonard Franz
 from matplotlib import style
 style.use(__file__.replace("__init__.py", "style.mplstyle"))
 
-# Imports
-import os
-
-# Make folder structure
-os.makedirs("report", exist_ok=True)
-os.makedirs("report/plots", exist_ok=True)
-
 # Fill the namespace
 from .instructions import *
 from .plot import slider_subplots, embedded_subplots, add_fig

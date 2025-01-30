@@ -2,6 +2,7 @@
 Programming Elements
 """
 # Imports
+import os
 from abc import ABC, abstractmethod
 from .constants import HEADER
 from typing import List
@@ -178,7 +179,16 @@ class ChangeStacker(Stackfluencer):
 program: List[Item | Stackfluencer] = []
 
 # Compiler
-def make():
+def make(name: str = "report") -> None:
+    # Delete the report directory if it exists
+    os.system(f"rm -r {name}")
+    # make folders
+    os.makedirs(name, exist_ok=True)
+    os.makedirs(f"{name}/plots", exist_ok=True)
+    # move contents of the tmp directory to the report directory
+    os.system(f"mv tmp/* {name}/")
+    # remove the tmp directory
+    os.system("rm -r tmp")
     # Initialize a NormalStacker
     stacker: Stacker = NormalStacker()
     # Let the stacker compile the program
@@ -199,7 +209,7 @@ def make():
     # Tell the stacker that no more items are coming
     stacker.end()
     # Write the html to a file
-    with open("report/index.html", "w") as file:
+    with open(f"{name}/index.html", "w") as file:
         file.write(stacker.html)
     # Clear the program
     program.clear()

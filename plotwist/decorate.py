@@ -17,7 +17,7 @@ def format_large_numbers(range_: Tuple, x: float, pos: int) -> str:
     Returns:
         str: formatted number
     """
-    if (range_[1] - range_[0]) / np.abs(x) < 0.2:
+    if abs(range_[1] - range_[0]) / max((abs(range_[1]), abs(range_[0]))) < 0.1:
         if range_[0] >= 1e12:
             offset = f'{range_[0]*1e-12:.1f}T'
         elif range_[0] >= 1e9:
@@ -32,32 +32,39 @@ def format_large_numbers(range_: Tuple, x: float, pos: int) -> str:
             offset = f'{range_[0]:.3f}'
 
         delta = x - range_[0]
-        if delta >= 1e12:
+        if range_[1] - range_[0] >= 1e12:
             return offset + f'+{delta*1e-12:.1f}T'
-        elif delta >= 1e9:
+        elif range_[1] - range_[0] >= 1e9:
             return offset + f'+{delta*1e-9:.1f}B'
-        elif delta >= 1e6:
+        elif range_[1] - range_[0] >= 1e6:
             return offset + f'+{delta*1e-6:.1f}M'
-        elif delta >= 1e3:
+        elif range_[1] - range_[0] >= 1e3:
             return offset + f'+{delta*1e-3:.1f}K'
-        elif delta >= 1:
+        elif range_[1] - range_[0] >= 1:
             return offset + f'+{delta:.1f}'
         else:
-            return offset + f'+{delta:.3f}'
+            return offset + f'\n+{delta:.3f}'
 
     else:
-        if x >= 1e12:
+        if abs(x) >= 1e12:
             return f'{x*1e-12:.1f}T'
-        elif x >= 1e9:
+        elif abs(x) >= 1e9:
             return f'{x*1e-9:.1f}B'
-        elif x >= 1e6:
+        elif abs(x) >= 1e6:
             return f'{x*1e-6:.1f}M'
-        elif x >= 1e3:
+        elif abs(x) >= 1e3:
             return f'{x*1e-3:.1f}K'
-        elif x >= 1:
+        elif abs(x) >= 10:
+            return f'{x:.0f}'
+        elif abs(x) >= 1 and max(abs(range_[0]), abs(range_[1])) > 10:
+            return f'{x:.0f}'
+        elif abs(x) >= 1:
             return f'{x:.1f}'
-        else:
-            return f'{x:.3f}'
+        elif max(abs(range_[0]), abs(range_[1])) > 10:
+            return f'{x:.0f}'
+        elif max(abs(range_[0]), abs(range_[1])) > 1:
+            return f'{x:.1f}'
+        return f'{x:.3f}'
 
 def decorate(ax: Axes, tick_label_offset: float = 0):
     """
