@@ -2,6 +2,7 @@
 Functions for regular reoccuring configurations of matplotlib axes.
 """
 from typing import *
+import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 from matplotlib.axes import Axes
 import numpy as np
@@ -64,10 +65,11 @@ def format_large_numbers(range_: Tuple, x: float, pos: int) -> str:
         else:
             return f'{x:.3f}'
 
-def decorate(ax: Axes, tick_label_offset: float = 0):
+def decorate(ax: Axes | None = None, tick_label_offset: float = 0):
     """
     Decorate an axes with a grid and set the aspect ratio to be equal.
     """
+    ax = ax or plt.gca()
     ax.grid(True)
     ax.legend()
     ax.get_xaxis().set_major_formatter(

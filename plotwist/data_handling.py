@@ -3,6 +3,7 @@ A submodule with lots of helper functions for handling data
 """
 # Imports
 from typing import Any, Dict, Generator, List
+import numpy as np
 
 # Classes
 class NestedDict:
@@ -21,14 +22,23 @@ class NestedDict:
 
         'a/b/c' is called a key path.
         """
+        if type(key) != str:
+            raise TypeError(f"Key must be a string but "
+                            f"is {type(key)}")
+        visited = []
         current = self.dictionary
         for key in key.split('/'):
             if key not in current:
-                raise KeyError(f"Key '{key}' not found.")
+                raise KeyError(f"Key '{key}' not present "
+                               f"in {'/'.join(visited)}")
+            visited.append(key)
             current = current[key]
         if isinstance(current, dict):
             return NestedDict(current)
-        return current
+        try:
+            return np.array(current)
+        except:
+            return current
 
     def subkeys(self, key: str) -> List[str]:
         """

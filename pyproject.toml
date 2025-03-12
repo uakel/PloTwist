@@ -6,9 +6,7 @@ authors = ["Leonard Franz <leonard.franz@student.uni-tuebingen.de>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-numpy = "^2.1.2"
-matplotlib = "^3.9.2"
+python = "^3.9"
 
 
 [build-system]
