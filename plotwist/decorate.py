@@ -50,20 +50,26 @@ def format_large_numbers(range_: Tuple, x: float, pos: int) -> str:
             return offset + d_exp
         return d_exp
 
-
     else:
-        if x >= 1e12:
+        if abs(x) >= 1e12:
             return f'{x*1e-12:.1f}T'
-        elif x >= 1e9:
+        elif abs(x) >= 1e9:
             return f'{x*1e-9:.1f}B'
-        elif x >= 1e6:
+        elif abs(x) >= 1e6:
             return f'{x*1e-6:.1f}M'
-        elif x >= 1e3:
+        elif abs(x) >= 1e3:
             return f'{x*1e-3:.1f}K'
-        elif x >= 1:
+        elif abs(x) >= 10:
+            return f'{x:.0f}'
+        elif abs(x) >= 1 and max(abs(range_[0]), abs(range_[1])) > 10:
+            return f'{x:.0f}'
+        elif abs(x) >= 1:
             return f'{x:.1f}'
-        else:
-            return f'{x:.3f}'
+        elif max(abs(range_[0]), abs(range_[1])) > 10:
+            return f'{x:.0f}'
+        elif max(abs(range_[0]), abs(range_[1])) > 1:
+            return f'{x:.1f}'
+        return f'{x:.3f}'
 
 def decorate(ax: Axes | None = None, tick_label_offset: float = 0):
     """
@@ -80,3 +86,4 @@ def decorate(ax: Axes | None = None, tick_label_offset: float = 0):
     )
 
 C = ['#003049', '#d62828', '#f77f00', '#fcbf49', '#588157', '#3a5a40']
+

@@ -10,6 +10,7 @@ plot_idx = 0
 from typing import List, Tuple, Literal
 
 # Imports 
+import os
 import numpy as np
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
@@ -18,13 +19,24 @@ from .program import Item
 import plotwist as ptw 
 import plotwist.program as ptp
 
+# Make a temporary directory
+def make_tmp_dir() -> None:
+    """
+    Make the tmp directory.
+    """
+    if not os.path.exists("tmp"):
+        os.makedirs("tmp")
+    if not os.path.exists("tmp/plots"):
+        os.makedirs("tmp/plots", exist_ok=True)
+
 # Add a plot to the html report
 def add_fig() -> None:
     """
     Add the current figure to the html report.
     """
     global plot_idx
-    plt.savefig(f"report/plots/plot_{plot_idx}.svg")
+    make_tmp_dir()
+    plt.savefig(f"tmp/plots/plot_{plot_idx}.svg")
     ptp.program.append(
         Item(
             f"<img src='plots/plot_{plot_idx}.svg'>"
@@ -58,15 +70,16 @@ class embedded_subplots:
     
     def __exit__(self, *args) -> None:
         global plot_idx
+        make_tmp_dir()
         if self.embedding == "plain":
-            self.fig.savefig(f"report/plots/plot_{plot_idx}.svg")
+            self.fig.savefig(f"tmp/plots/plot_{plot_idx}.svg")
             ptp.program.append(
                 Item(
                     f"<img src='plots/plot_{plot_idx}.svg'>"
                 )
             )
         elif self.embedding == "scrollable":
-            self.fig.savefig(f"report/plots/plot_{plot_idx}.svg")
+            self.fig.savefig(f"tmp/plots/plot_{plot_idx}.svg")
             ptp.program.append(
                 Item(
                     f"<iframe src='plots/plot_{plot_idx}.svg' width='700px' height='500px'></iframe>"
@@ -74,7 +87,7 @@ class embedded_subplots:
             )
         elif self.embedding == "interactive":
             import mpld3
-            mpld3.save_html(self.fig, f"report/plots/plot_{plot_idx}.html")
+            mpld3.save_html(self.fig, f"tmp/plots/plot_{plot_idx}.html")
             ptp.program.append(
                 Item(
                     f"<iframe src='plots/plot_{plot_idx}.html' width='700px' height='500px'></iframe>"
@@ -111,12 +124,13 @@ class slider_subplots:
 
     def __exit__(self, *args) -> None:
         global plot_idx
+        make_tmp_dir()
         for fig in self.figs:
             if self.embedding == "interactive":
                 import mpld3
-                mpld3.save_html(fig, f"report/plots/plot_{plot_idx}.html")
+                mpld3.save_html(fig, f"tmp/plots/plot_{plot_idx}.html")
             else:
-                fig.savefig(f"report/plots/plot_{plot_idx}.svg")
+                fig.savefig(f"tmp/plots/plot_{plot_idx}.svg")
             plot_idx += 1
         slider_plot_html = \
         f"""<span style="display: inline-flex; flex-direction: column;">
